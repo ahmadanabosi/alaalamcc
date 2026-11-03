@@ -127,7 +127,7 @@ export default async function ContactPage() {
 
             <div className="pt-6 border-t border-emerald-800/80 relative z-10 flex items-center justify-between text-xs sm:text-sm text-emerald-200">
               <span>{lang === 'ar' ? 'حلول العالم للاتصالات وتقنية المعلومات' : 'World Business Solutions'}</span>
-              <span className="font-bold">alaalamcc.com</span>
+              <span className="font-bold">alaalam.com</span>
             </div>
           </div>
 

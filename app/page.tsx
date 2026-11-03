@@ -48,7 +48,7 @@ export default function Home() {
             </div>
             <div className="text-center space-y-2">
               <h2 className="text-lg sm:text-xl font-bold text-amber-950 tracking-wide">
-                {currentLang === 'ar' ? 'شركة حلول العالم للاتصالات وتقنية المعلومات' : 'Alaalamcc Solutions for Telecom & IT'}
+                {currentLang === 'ar' ? 'شركة حلول العالم للاتصالات وتقنية المعلومات' : 'alaalam Solutions for Telecom & IT'}
               </h2>
               <div className="flex items-center justify-center gap-2 text-xs text-emerald-400 font-medium">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>

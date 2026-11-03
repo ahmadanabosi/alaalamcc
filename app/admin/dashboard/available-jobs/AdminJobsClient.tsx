@@ -297,7 +297,7 @@ export default function AdminJobsClient({
             </div>
 
             <p className="text-xs text-slate-500">
-              {lang === 'ar' ? 'شركة حلول العالم للاتصالات وتقنية المعلومات' : 'Alaalamcc Solutions for Telecom & IT'}
+              {lang === 'ar' ? 'شركة حلول العالم للاتصالات وتقنية المعلومات' : 'alaalam Solutions for Telecom & IT'}
             </p>
           </div>
 

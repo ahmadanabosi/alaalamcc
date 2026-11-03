@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-white font-bold text-base leading-snug">
             <span>🌍</span>
-            <span>{lang === 'ar' ? 'شركة حلول العالم للاتصالات وتقنية المعلومات' : 'Alaalamcc Solutions for Telecom & IT'}</span>
+            <span>{lang === 'ar' ? 'شركة حلول العالم للاتصالات وتقنية المعلومات' : 'alaalam Solutions for Telecom & IT'}</span>
           </div>
           <p className="text-xs text-slate-400 leading-relaxed">
             {lang === 'ar'
@@ -118,7 +118,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/80 pt-6 text-center text-xs text-slate-500">
         {lang === 'ar'
           ? `جميع الحقوق محفوظة © ${new Date().getFullYear()} شركة حلول العالم للاتصالات وتقنية المعلومات.`
-          : `All rights reserved © ${new Date().getFullYear()} Alaalamcc Solutions for Telecom & IT.`}
+          : `All rights reserved © ${new Date().getFullYear()} alaalam Solutions for Telecom & IT.`}
       </div>
     </footer>
   );

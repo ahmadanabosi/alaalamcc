@@ -64,10 +64,10 @@ export default function Header() {
           </div>
           <div>
             <span className="text-lg sm:text-xl font-black bg-linear-to-r from-slate-900 via-emerald-800 to-amber-600 dark:from-white dark:via-emerald-400 dark:to-amber-400 bg-clip-text text-transparent block leading-tight">
-              {lang === 'ar' ? 'حلول العالم' : 'Alaalamcc'}
+              {lang === 'ar' ? 'حلول العالم' : 'alaalam'}
             </span>
             <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-bold tracking-wider uppercase block">
-              Alaalamcc Solutions
+              alaalam Solutions
             </span>
           </div>
         </Link>

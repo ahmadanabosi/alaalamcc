@@ -32,7 +32,7 @@ export default function HtmlSitemapPage() {
         <p className="text-slate-600 dark:text-slate-300 text-sm mb-8">
           {currentLang === 'ar'
             ? 'دليل شامل لكافة أقسام وصفحات موقع شركة حلول العالم للاتصالات وتقنية المعلومات.'
-            : 'A comprehensive guide to all sections and pages of Alaalamcc Solutions for Telecom and IT.'}
+            : 'A comprehensive guide to all sections and pages of alaalam Solutions for Telecom and IT.'}
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
