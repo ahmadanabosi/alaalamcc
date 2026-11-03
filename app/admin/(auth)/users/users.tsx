@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import AdminHeader from '@/components/admin/AdminHeader';
 import Link from 'next/link';
 import { useTranslation } from '@/utils/useTranslation';
@@ -16,6 +16,7 @@ import {
   generateSecureResetTokenAction,
   createNewRoleAction,
 } from './actions';
+import { hasPermission } from '@/lib/supabase/permissions';
 
 interface Role {
   id: string;
@@ -164,7 +165,7 @@ export default function UsersManagerClient({
     if (isSavingUser) return;
 
     setIsSavingUser(true);
-    setMessage(null); 
+    setMessage(null);
 
     try {
       const res = await createUserAction({
@@ -350,15 +351,15 @@ export default function UsersManagerClient({
 
                       <td className="p-4 whitespace-nowrap">
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${u.is_blocked
-                            ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                            : u.is_active
-                              ? 'bg-emerald-50 text-emerald-700'
-                              : 'bg-rose-50 text-rose-700'
+                          ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                          : u.is_active
+                            ? 'bg-emerald-50 text-emerald-700'
+                            : 'bg-rose-50 text-rose-700'
                           }`}>
-                          {u.is_blocked 
-                            ? (lang === 'ar' ? 'محظور (خطأ دخول)' : 'Blocked (Login Error)') 
-                            : u.is_active 
-                              ? (lang === 'ar' ? 'نشط' : 'Active') 
+                          {u.is_blocked
+                            ? (lang === 'ar' ? 'محظور (خطأ دخول)' : 'Blocked (Login Error)')
+                            : u.is_active
+                              ? (lang === 'ar' ? 'نشط' : 'Active')
                               : (lang === 'ar' ? 'معطل' : 'Disabled')}
                         </span>
                       </td>
@@ -452,7 +453,7 @@ export default function UsersManagerClient({
             <div className={`bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6 transition-all ${!selectedRoleId ? 'opacity-60' : ''}`}>
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
                 <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
-                  {lang === 'ar' ? 'صلاحيات الدور: ' : 'Role Permissions: '} 
+                  {lang === 'ar' ? 'صلاحيات الدور: ' : 'Role Permissions: '}
                   <span className="text-emerald-600">{currentRole?.display_name || (lang === 'ar' ? 'الرجاء اختيار الدور أولاً' : 'Please select a role first')}</span>
                 </h3>
                 <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-xl">
@@ -476,6 +477,8 @@ export default function UsersManagerClient({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                       {perms.map((perm) => {
+                       
+
                         const isChecked = assignedPermissions.includes(perm.id);
                         const isSavingThis = savingPermissionId === perm.id;
                         return (
@@ -499,6 +502,7 @@ export default function UsersManagerClient({
                                 disabled={!selectedRoleId}
                                 checked={isChecked}
                                 onChange={() => handleCheckboxToggle(perm.id)}
+
                                 className="mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 cursor-pointer disabled:cursor-not-allowed"
                               />
                               <div className="space-y-0.5 flex-1">
@@ -506,7 +510,9 @@ export default function UsersManagerClient({
                                   <span>{perm.name}</span>
                                   {isSavingThis && <span className="text-[9px] text-emerald-600">{lang === 'ar' ? 'جاري الحفظ...' : 'Saving...'}</span>}
                                 </span>
-                                <span className="text-[11px] text-slate-400 block leading-tight">{perm.description}</span>
+                               
+                                  <span className="text-[11px] text-slate-400 block leading-tight">{perm.description}</span>
+                                
                               </div>
                             </label>
                           </div>
@@ -518,120 +524,122 @@ export default function UsersManagerClient({
               </div>
             </div>
           </div>
+          {currentUserRole === 'super_admin' && (
+            <div className="space-y-6">
+              <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+                  {lang === 'ar' ? 'إضافة دور وظيفي جديد' : 'Add New Job Role'}
+                </h3>
+                <form onSubmit={handleCreateRole} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                      {lang === 'ar' ? 'اسم الدور البرمجي (بالإنجليزية):' : 'Role Programmatic Name (English):'}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={newRoleName}
+                      onChange={(e) => setNewRoleName(e.target.value)}
+                      placeholder="purchasing_committee"
+                      className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-800 dark:text-white outline-none"
+                    />
+                  </div>
 
-          <div className="space-y-6">
-            <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
-              <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
-                {lang === 'ar' ? 'إضافة دور وظيفي جديد' : 'Add New Job Role'}
-              </h3>
-              <form onSubmit={handleCreateRole} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                    {lang === 'ar' ? 'اسم الدور البرمجي (بالإنجليزية):' : 'Role Programmatic Name (English):'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={newRoleName}
-                    onChange={(e) => setNewRoleName(e.target.value)}
-                    placeholder="purchasing_committee"
-                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-800 dark:text-white outline-none"
-                  />
-                </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                      {lang === 'ar' ? 'اسم العرض (بالعربية):' : 'Display Name (Arabic/Local):'}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={newRoleDisplayName}
+                      onChange={(e) => setNewRoleDisplayName(e.target.value)}
+                      placeholder="مدير لجنة المشتريات"
+                      className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-800 dark:text-white outline-none"
+                    />
+                  </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                    {lang === 'ar' ? 'اسم العرض (بالعربية):' : 'Display Name (Arabic/Local):'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={newRoleDisplayName}
-                    onChange={(e) => setNewRoleDisplayName(e.target.value)}
-                    placeholder="مدير لجنة المشتريات"
-                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-800 dark:text-white outline-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSavingRole}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-xs transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSavingRole 
-                    ? (lang === 'ar' ? 'جاري الإضافة...' : 'Adding...') 
-                    : (lang === 'ar' ? 'إضافة الدور الجديد' : 'Add New Role')}
-                </button>
-              </form>
-            </div>
-
-            <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
-              <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
-                {lang === 'ar' ? 'إضافة صلاحية جديدة' : 'Add New Permission'}
-              </h3>
-              <form onSubmit={handleAddPermission} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                    {lang === 'ar' ? 'الصفحة / القسم التابع:' : 'Target Section / Module:'}
-                  </label>
-                  <select
-                    value={newPermModule}
-                    onChange={(e) => setNewPermModule(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-800 dark:text-white outline-none cursor-pointer"
+                  <button
+                    type="submit"
+                    disabled={isSavingRole}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-xs transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <option value="jobs">{lang === 'ar' ? 'إدارة الوظائف (Jobs)' : 'Job Management (Jobs)'}</option>
-                    <option value="careers">{lang === 'ar' ? 'طلبات التوظيف (Careers)' : 'Career Applications (Careers)'}</option>
-                    <option value="customer_service">{lang === 'ar' ? 'خدمة العملاء (Customer Service)' : 'Customer Service'}</option>
-                    <option value="requests">{lang === 'ar' ? 'طلبات الخدمات (Requests)' : 'Service Requests (Requests)'}</option>
-                    <option value="messages">{lang === 'ar' ? 'الرسائل (Messages)' : 'Messages'}</option>
-                    <option value="users">{lang === 'ar' ? 'المشرفين والصلاحيات (Users)' : 'Users & Permissions (Users)'}</option>
-                    <option value="general">{lang === 'ar' ? 'عام (General)' : 'General'}</option>
-                  </select>
-                </div>
+                    {isSavingRole
+                      ? (lang === 'ar' ? 'جاري الإضافة...' : 'Adding...')
+                      : (lang === 'ar' ? 'إضافة الدور الجديد' : 'Add New Role')}
+                  </button>
+                </form>
+              </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                    {lang === 'ar' ? 'اسم الصلاحية البرمجي:' : 'Permission Programmatic Name:'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={newPermName}
-                    onChange={(e) => setNewPermName(e.target.value)}
-                    placeholder="jobs.export"
-                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-800 dark:text-white outline-none"
-                  />
-                </div>
+              <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+                  {lang === 'ar' ? 'إضافة صلاحية جديدة' : 'Add New Permission'}
+                </h3>
+                <form onSubmit={handleAddPermission} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                      {lang === 'ar' ? 'الصفحة / القسم التابع:' : 'Target Section / Module:'}
+                    </label>
+                    <select
+                      value={newPermModule}
+                      onChange={(e) => setNewPermModule(e.target.value)}
+                      className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-800 dark:text-white outline-none cursor-pointer"
+                    >
+                      <option value="jobs">{lang === 'ar' ? 'إدارة الوظائف (Jobs)' : 'Job Management (Jobs)'}</option>
+                      <option value="careers">{lang === 'ar' ? 'طلبات التوظيف (Careers)' : 'Career Applications (Careers)'}</option>
+                      <option value="customer_service">{lang === 'ar' ? 'خدمة العملاء (Customer Service)' : 'Customer Service'}</option>
+                      <option value="requests">{lang === 'ar' ? 'طلبات الخدمات (Requests)' : 'Service Requests (Requests)'}</option>
+                      <option value="messages">{lang === 'ar' ? 'الرسائل (Messages)' : 'Messages'}</option>
 
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                    {lang === 'ar' ? 'وصف الصلاحية:' : 'Permission Description:'}
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={newPermDesc}
-                    onChange={(e) => setNewPermDesc(e.target.value)}
-                    placeholder={lang === 'ar' ? 'وصف عمل الصلاحية باختصار...' : 'Short description of permission action...'}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-xs text-slate-800 dark:text-white outline-none resize-none"
-                  />
-                </div>
+                      <option value="users">{lang === 'ar' ? 'المشرفين والصلاحيات (Users)' : 'Users & Permissions (Users)'}</option>
+                      <option value="general">{lang === 'ar' ? 'عام (General)' : 'General'}</option>
+                    </select>
+                  </div>
 
-                <button
-                  type="submit"
-                  disabled={isPending}
-                  className="w-full bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs transition-all cursor-pointer"
-                >
-                  {isPending 
-                    ? (lang === 'ar' ? 'جاري الإضافة...' : 'Adding...') 
-                    : (lang === 'ar' ? 'إضافة الصلاحية للقائمة' : 'Add Permission to List')}
-                </button>
-              </form>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                      {lang === 'ar' ? 'اسم الصلاحية البرمجي:' : 'Permission Programmatic Name:'}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={newPermName}
+                      onChange={(e) => setNewPermName(e.target.value)}
+                      placeholder="jobs.export"
+                      className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-800 dark:text-white outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                      {lang === 'ar' ? 'وصف الصلاحية:' : 'Permission Description:'}
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={newPermDesc}
+                      onChange={(e) => setNewPermDesc(e.target.value)}
+                      placeholder={lang === 'ar' ? 'وصف عمل الصلاحية باختصار...' : 'Short description of permission action...'}
+                      className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-xs text-slate-800 dark:text-white outline-none resize-none"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isPending}
+                    className="w-full bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs transition-all cursor-pointer"
+                  >
+                    {isPending
+                      ? (lang === 'ar' ? 'جاري الإضافة...' : 'Adding...')
+                      : (lang === 'ar' ? 'إضافة الصلاحية للقائمة' : 'Add Permission to List')}
+                  </button>
+                </form>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
-      {showAddUserModal && (
+      {currentUserRole === 'super_admin' && showAddUserModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-800 space-y-6">
             <div className="flex items-center justify-between">
@@ -727,8 +735,8 @@ export default function UsersManagerClient({
                   {isSavingUser && (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   )}
-                  {isSavingUser 
-                    ? (lang === 'ar' ? 'جاري حفظ المشرف وإنشاء الحساب...' : 'Saving admin and creating account...') 
+                  {isSavingUser
+                    ? (lang === 'ar' ? 'جاري حفظ المشرف وإنشاء الحساب...' : 'Saving admin and creating account...')
                     : (lang === 'ar' ? 'حفظ المشرف الجديد' : 'Save New Admin')}
                 </button>
 
