@@ -29,7 +29,7 @@ export default function WhyUs() {
 
           <h2 className="text-3xl sm:text-5xl font-black text-slate-900 leading-tight tracking-tight">
             {whyUsText?.titleMain} <br />
-            <span className="bg-linear-to-r from-amber-500 via-amber-600 to-yellow-600 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-300 via-blue-600 to-gray-900 bg-clip-text text-transparent">
               {whyUsText?.titleHighlight}
             </span>
           </h2>

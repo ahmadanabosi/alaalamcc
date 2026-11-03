@@ -47,7 +47,7 @@ export default function Home() {
               />
             </div>
             <div className="text-center space-y-2">
-              <h2 className="text-lg sm:text-xl font-bold text-amber-500 tracking-wide">
+              <h2 className="text-lg sm:text-xl font-bold text-amber-950 tracking-wide">
                 {currentLang === 'ar' ? 'شركة حلول العالم للاتصالات وتقنية المعلومات' : 'Alaalam Solutions for Telecom & IT'}
               </h2>
               <div className="flex items-center justify-center gap-2 text-xs text-emerald-400 font-medium">

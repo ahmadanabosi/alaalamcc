@@ -71,7 +71,7 @@ const { lang, t } = await getTranslation();
 
           <h2 className="text-3xl sm:text-5xl font-black leading-tight">
             {serviceText.hero.title} <br />
-            <span className="bg-linear-to-r from-amber-500 via-amber-600 to-yellow-600 dark:from-amber-400 dark:to-yellow-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-300 via-blue-600 to-gray-900 bg-clip-text text-transparent">
               {serviceText.hero.titleHighlight}
             </span>
           </h2>
@@ -141,7 +141,7 @@ const { lang, t } = await getTranslation();
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center divide-y md:divide-y-0 md:divide-x md:divide-x-reverse divide-slate-800">
             {qualityMetrics.map((metric, idx) => (
               <div key={idx} className="pt-4 md:pt-0 space-y-1">
-                <div className="text-2xl sm:text-3xl font-black text-amber-400">
+                <div className="text-2xl sm:text-3xl font-black text-white-900 dark:text-white">
                   {metric.value}
                 </div>
                 <div className="text-xs sm:text-sm text-slate-300 font-medium">
