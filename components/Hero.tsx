@@ -43,7 +43,7 @@ export default function Hero() {
       image: '/images/gallery/sa-hosting.png',
       eyebrow: translatedSlides[0]?.eyebrow || (lang === 'en' ? '100% Saudi Cloud Hosting' : 'استضافة سحابية سعودية 100%'),
       title: translatedSlides[0]?.title || (lang === 'en' ? 'We run your customer communication, while you focus on growing your business' : 'نُشغّل خط التواصل مع عملائك، وأنت تركّز على نمو عملك'),
-      description: translatedSlides[0]?.description || (lang === 'en' ? 'Alaalam Telecom & IT builds and operates dedicated contact centers in Saudi Arabia.' : 'حلول العالم للاتصالات وتقنية المعلومات تبني وتُشغّل مراكز اتصال مخصصة للشركات في السعودية.'),
+      description: translatedSlides[0]?.description || (lang === 'en' ? 'Alaalamcc Telecom & IT builds and operates dedicated contact centers in Saudi Arabia.' : 'حلول العالم للاتصالات وتقنية المعلومات تبني وتُشغّل مراكز اتصال مخصصة للشركات في السعودية.'),
       featureIcon: translatedSlides[0]?.featureIcon || '🏢',
       featureTitle: translatedSlides[0]?.featureTitle || (lang === 'en' ? 'Saudi Cloud Hosting' : 'استضافة سحابية سعودية'),
       featureDesc: translatedSlides[0]?.featureDesc || (lang === 'en' ? 'Flexible infrastructure hosted within the Kingdom.' : 'بنية تحتية مرنة ومستضافة داخل المملكة.')

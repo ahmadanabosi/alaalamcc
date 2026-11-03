@@ -60,14 +60,14 @@ export default function Header() {
         
         <Link href="/" className="flex items-center gap-3.5 group">
           <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-white flex items-center justify-center shadow-md border border-slate-100 p-1 group-hover:scale-105 transition-transform">
-            <img src="/images/logo.webp" alt="Alaalam" className="h-10 sm:h-12 w-auto object-contain" />
+            <img src="/images/logo.webp" alt="Alaalamcc" className="h-10 sm:h-12 w-auto object-contain" />
           </div>
           <div>
             <span className="text-lg sm:text-xl font-black bg-linear-to-r from-slate-900 via-emerald-800 to-amber-600 dark:from-white dark:via-emerald-400 dark:to-amber-400 bg-clip-text text-transparent block leading-tight">
-              {lang === 'ar' ? 'حلول العالم' : 'Alaalam'}
+              {lang === 'ar' ? 'حلول العالم' : 'Alaalamcc'}
             </span>
             <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-bold tracking-wider uppercase block">
-              Alaalam Solutions
+              Alaalamcc Solutions
             </span>
           </div>
         </Link>
