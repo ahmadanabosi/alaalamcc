@@ -141,7 +141,7 @@ export default function HowItWorks() {
                 </div>
 
                 <div className={`mt-6 pt-4 border-t transition-colors duration-300 flex items-center justify-between text-xs font-semibold ${isActive ? 'border-emerald-200 dark:border-emerald-900/50 text-emerald-600 dark:text-emerald-400' : 'border-slate-200/60 dark:border-slate-800 text-slate-400'}`}>
-                  <span>{lang === 'ar' ? (isActive ? '● مرحلة نشطة' : 'مرر للاستعراض') : (isActive ? '● Active Step' : 'Scroll to view')}</span>
+                
                   <span className={`transform transition-transform duration-300 ${isActive ? 'scale-125 text-emerald-500' : 'opacity-40'}`}>
                     ✦
                   </span>
